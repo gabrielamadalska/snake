@@ -28,6 +28,17 @@ class Snake:
             pygame.draw.rect(screen, WHITE, (segment[0], segment[1], CELL_SIZE, CELL_SIZE))
             #pygame.draw.rect(screen, WHITE, (segment[0] * CELL_SIZE, segment[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
+class Food:
+    def __init__(self):
+        self.position = self.food_position()
+    def food_position(self):
+        x = (random.randint(0, WIDTH // CELL_SIZE - 1)) * CELL_SIZE
+        y = (random.randint(0, HEIGHT // CELL_SIZE - 1)) * CELL_SIZE
+
+        return (x, y)
+    def draw(self, screen):
+        pygame.draw.rect(screen, RED, (self.position[0], self.position[1], CELL_SIZE, CELL_SIZE))
+
 def game():
     # ustawienie okna
     pygame.init()
@@ -37,7 +48,10 @@ def game():
 
     # utworzenie obiektu klasy Snake
     snake = Snake()
-    
+
+    # utworzenie obiektu klasy Food
+    food = Food()
+
     # głowna petla gry
     running = True
  
@@ -64,13 +78,15 @@ def game():
         if not (0 <= snake.body[0][0] < WIDTH and 0 <= snake.body[0][1] < HEIGHT):
                 running = False
 
-        # if snake.body < WIDTH:
-        #     running = False
+
 
 
         screen.fill(BLACK)
         # rysowanie snake na ekranie
         snake.draw(screen) 
+
+        # rysowanie jedzenia
+        food.draw(screen)
 
         pygame.display.flip()
         
