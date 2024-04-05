@@ -31,13 +31,20 @@ class Snake:
 class Food:
     def __init__(self):
         self.position = self.food_position()
+
     def food_position(self):
         x = (random.randint(0, WIDTH // CELL_SIZE - 1)) * CELL_SIZE
         y = (random.randint(0, HEIGHT // CELL_SIZE - 1)) * CELL_SIZE
 
         return (x, y)
+    
     def draw(self, screen):
         pygame.draw.rect(screen, RED, (self.position[0], self.position[1], CELL_SIZE, CELL_SIZE))
+
+def draw_score(screen, score):
+    font = pygame.font.Font(None, 36)
+    score_text = font.render("Score: " + str(score), True, WHITE)
+    screen.blit(score_text, (10, 10))
 
 def game():
     # ustawienie okna
@@ -54,12 +61,13 @@ def game():
 
     # głowna petla gry
     running = True
- 
+    
+    score = 0
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN: # po naciśnieciu klawisza wchodzi w pętlę
                 if event.key == pygame.K_UP and snake.direction != (0, CELL_SIZE):
                     snake.direction = (0, -CELL_SIZE)
                 elif event.key == pygame.K_DOWN and snake.direction != (0, -CELL_SIZE): # jesli on nie idzie w dół zmien jego keirunek na DOŁ
@@ -73,25 +81,21 @@ def game():
 
         # przesuniecie weza o komórke 
         snake.move()
+        if snake.body[0] == food.position:
+            food.position = food.food_position()
+            score += 1
 
         # zamknięcie gry z powodu wjechania w ścianę 
         if not (0 <= snake.body[0][0] < WIDTH and 0 <= snake.body[0][1] < HEIGHT):
                 running = False
 
 
-
-
-        screen.fill(BLACK)
-        # rysowanie snake na ekranie
-        snake.draw(screen) 
-
-        # rysowanie jedzenia
-        food.draw(screen)
-
+        screen.fill(BLACK)  # wypełnienie ekranu kolorem
+        snake.draw(screen)  # rysowanie snake na ekranie 
+        food.draw(screen)   # rysowanie jedzenia
+        draw_score(screen, score)   # wyswietlanie wyniku
         pygame.display.flip()
-        
-        # odświezacnie co 10 sek
-        clock.tick(FPS)
+        clock.tick(FPS) # odświezacnie co 10 sek
      
     pygame.quit()
     sys.exit()
