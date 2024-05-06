@@ -1,3 +1,15 @@
+'''''
+    The code implements a simple Snake game using Pygame library in Python, where the player controls a
+    snake to eat food and grow while avoiding walls.
+    
+    :param screen: The `screen` parameter represents the surface on which everything is drawn in the
+    game. It is the main window or display area where all the game elements such as the snake, food, and
+    score are rendered
+    :param score: The `score` parameter in the code represents the player's score in the Snake game. It
+    is incremented by 1 each time the snake eats the food (red square) on the screen. The score is
+    displayed on the top left corner of the game window and keeps track of how many times the
+'''''   
+
 import pygame
 import sys
 import random
